@@ -1,4 +1,87 @@
 * {
-    background-color: #1c1c1c;
     color: #e7e7e7;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+body {
+    background-color: #1c1c1c;
+    display: flex; /* Enables flexbox */
+    justify-content: center; /* Centers child elements horizontally */
+    align-items: center; /* Centers child elements vertically */
+    height: 100vh; /* Ensures the body takes the full height of the viewport */
+    margin: 0; /* Removes default margin */
+}
+
+button {
+    margin-top: 10px;
+    background-color: #4D9E5F;
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+
+}
+
+button:hover {
+    background-color: #448752;
+    transition: ease-in 0.2s;
+}
+
+input {
+    width: 25rem;
+    height: 40px;
+    color: #d9d9d9;
+    border-radius: 15px;
+    padding-left: 10px;
+    background-color: #7E7E7E;
+    border: none;
+}
+
+::placeholder {
+    color: #989898;
+}
+
+
+strong {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#credits {
+    font-size: 0.7rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+
+.mainContainer {
+    background-color: #313131;
+    display: inline-block;
+    border-radius: 20px;
+    padding: 10px; /* Adds space between content and border */
+    text-align: left; /* Centers text inside the container */
+}
+
+/* Result container */
+
+.resultContainer {
+    background-color: #575757;
+    display: inline-block;
+    border-radius: 20px;
+    padding: 10px; 
+    padding-top: 30px;
+    text-align: left; 
+    margin-top: 10px;
+    width: 95%;
+    
+}
+
+.resultContainer p {
+    margin-top: -10px;
 }

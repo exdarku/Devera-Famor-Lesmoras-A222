@@ -6,20 +6,48 @@ Developed by:
 - Laurence Kharl Devera
 - Joshua Famor
 */
-let currentMessage = "";
 
 // When the "Tokenize my text, please uwu!" button is clicked, this will be executed.
 document.getElementById("submit").onclick = function() {
     let text = document.getElementById("userInput").value;
     document.getElementById("totalCharacters").innerHTML = text.length;
-    addElementToTextBox(text);
+    
+    let tokens = tokenize(text);
+    displayResults(tokens);
 }
 
-// Function to append elements into the textbox
-function addElementToTextBox(message) {
-    const resultTextbox = document.getElementById("resultTextbox");
-    resultTextbox.value += message + "\n";
-    adjustHeight(resultTextbox);
+// Function to display tokenization results
+function displayResults(tokens) {
+    let wordCount = 0, sentenceCount = 0, symbolCount = 0;
+    let resultText = "";
+    
+    tokens.forEach(tokenObj => {
+        resultText += `Token: ${tokenObj.token}, Type: ${tokenObj.type}\n`;
+        resultText += `Characters: ${tokenObj.chars.join(', ')}\n\n`;
+
+        switch (tokenObj.type) {
+            case 'Word':
+                wordCount++;
+                break;
+            case 'Punctuation':
+                if (tokenObj.token === "." || tokenObj.token === "!" || tokenObj.token === "?") {
+                    sentenceCount++;
+                }
+                break;
+            case 'Special Character':
+                symbolCount++;
+                break;
+            default:
+                break;
+        }
+    });
+
+    document.getElementById("resultTextbox").value = resultText;
+    document.getElementById("totalWords").innerText = wordCount;
+    document.getElementById("totalSentences").innerText = sentenceCount;
+    document.getElementById("totalSymbols").innerText = symbolCount;
+
+    adjustHeight(document.getElementById("resultTextbox"));
 }
 
 
@@ -28,29 +56,7 @@ function adjustHeight(textarea) {
     textarea.style.height = (textarea.scrollHeight) + "px"; 
 }
 
-
-document.addEventListener("DOMContentLoaded", function() {
-    adjustHeight(document.getElementById("resultTextbox"));
-});
-
-
-// This is how a function works in JavaScript.
-function helloWorld() {
-    alert("Hello World!");
-}
-
-// This is a function that takes in a parameter.
-function helloWorldPeroMayParameters(name) {
-    alert("Hello " + name + "!");
-}
-
-// This is a function that returns a value.
-function add(a, b) {
-    return a + b;
-}
-
-// Famor part
-// Yo this is para ma clasify ang mga token
+// Function to classify tokens
 function classifyToken(token) {
     if (/^[a-zA-Z]+$/.test(token)) {
         return 'Word';
@@ -86,13 +92,3 @@ function tokenize(input) {
     
     return granularTokens;
 }
-
-
-    // try like ni , just put input sa inputtext
-
-let inputText = "";
-let result = tokenize(inputText);
-
-console.log(result);
-
-

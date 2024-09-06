@@ -14,7 +14,7 @@
     <div class="mainContainer">
         <div class="innerMainContainer">
             <div class="title">
-                <h1><strong>String tokenizer</strong></h1>
+                <h1><strong>String Tokenizer</strong></h1>
             </div>
     
             <input type="text" placeholder="Enter a text" id="userInput">
@@ -22,12 +22,16 @@
                 <button id="submit"><strong>Tokenize my text, please uwu!</strong></button>
             </div>
             <div class="resultContainer">
-                <p><strong>Total characters: </strong> 0</p>
+                <p><strong>Total characters: </strong> <span id="totalCharacters">0</span></p>
                 <p><strong>Total words: </strong> 0</p>
                 <p><strong>Total sentences: </strong> 0</p>
                 <p><strong>Total symbols: </strong> 0</p>
             </div>
-            <p id="credits">Made with ❤️ by Lesmoras, Devera, Famor, and Navarez</p>
+            <div class="resultContainerTextBox">
+                <p><strong>Result: </strong></p>
+                <textarea id="resultTextbox" placeholder="Result will be displayed here" readonly></textarea>
+            </div>
+            <p id="credits">Made with ❤️ by Lesmoras, Devera, and Famor</p>
         </div>
     </div>
 

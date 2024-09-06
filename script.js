@@ -67,6 +67,11 @@ function tokenize(input) {
 }
 
 
-    // will update it a while please wait
+    // try like ni , just put input sa inputtext
+
+let inputText = "";
+let result = tokenize(inputText);
+
+console.log(result);
 
 

@@ -5,6 +5,10 @@ Developed by:
 - Laurence Lesmoras
 - Laurence Kharl Devera
 - Joshua Famor
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8cb135bfa6d53eb70fe9de2431053dfae664bd22
 */
 let currentMessage = "";
 
@@ -48,3 +52,51 @@ function helloWorldPeroMayParameters(name) {
 function add(a, b) {
     return a + b;
 }
+
+// Famor part
+// Yo this is para ma clasify ang mga token
+function classifyToken(token) {
+    if (/^[a-zA-Z]+$/.test(token)) {
+        return 'Word';
+    } else if (/^\d+$/.test(token)) {
+        return 'Number';
+    } else if (/^[a-zA-Z0-9]+$/.test(token)) {
+        return 'Alphanumeric';
+    } else if (/^[.,!?;:]+$/.test(token)) {
+        return 'Punctuation';
+    } else if (/^[^a-zA-Z0-9.,!?;:]+$/.test(token)) {
+        return 'Special Character';
+    } else {
+        return 'Unknown';
+    }
+}
+
+// kani kay input
+function tokenize(input) {
+    // Step 1: Split the input string by the delimiter '<'
+    let tokens = input.split('<');
+    
+    // Step 2: Classify each token and store it in an array
+    let classifiedTokens = tokens.map(token => {
+        let type = classifyToken(token);
+        return { token, type };
+    });
+    
+    // Step 3: Further break down each token into individual characters
+    let granularTokens = classifiedTokens.map(entry => {
+        let chars = entry.token.split('');
+        return { ...entry, chars };
+    });
+    
+    return granularTokens;
+}
+
+
+    // try like ni , just put input sa inputtext
+
+let inputText = "";
+let result = tokenize(inputText);
+
+console.log(result);
+
+

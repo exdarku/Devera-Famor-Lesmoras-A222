@@ -41,6 +41,8 @@ function classifyToken(token) {
         return 'Alphanumeric';
     } else if (/^[.,!?;:]+$/.test(token)) {
         return 'Punctuation';
+    } else if (/^[^a-zA-Z0-9.,!?;:]+$/.test(token)) {
+        return 'Special Character';
     } else {
         return 'Unknown';
     }

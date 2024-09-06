@@ -16,7 +16,6 @@ document.getElementById("submit").onclick = function() {
     displayResults(tokens);
 }
 
-// Function to display tokenization results
 function displayResults(tokens) {
     let wordCount = 0, sentenceCount = 0, symbolCount = 0;
     let resultText = "";
@@ -24,7 +23,8 @@ function displayResults(tokens) {
     tokens.forEach(tokenObj => {
         resultText += `Token: ${tokenObj.token}, Type: ${tokenObj.type}\n`;
         resultText += `Characters: ${tokenObj.chars.join(', ')}\n\n`;
-
+ 
+        // added incrementation for token count
         switch (tokenObj.type) {
             case 'Word':
                 wordCount++;
@@ -50,13 +50,11 @@ function displayResults(tokens) {
     adjustHeight(document.getElementById("resultTextbox"));
 }
 
-// Function to adjust the height of the textarea
 function adjustHeight(textarea) {
     textarea.style.height = "auto"; 
     textarea.style.height = (textarea.scrollHeight) + "px"; 
 }
 
-// Function to classify tokens
 function classifyToken(token) {
     if (/^[a-zA-Z]+$/.test(token)) {
         return 'Word';
@@ -73,22 +71,14 @@ function classifyToken(token) {
     }
 }
 
-// Function to tokenize the input
 function tokenize(input) {
-    // Step 1: Split the input string by the delimiter '<'
-    let tokens = input.split('<');
+    let tokens = input.match(/(\w+|[.,!?;:]+|[^a-zA-Z0-9.,!?;:\s]+)/g) || [];
     
-    // Step 2: Classify each token and store it in an array
     let classifiedTokens = tokens.map(token => {
         let type = classifyToken(token);
-        return { token, type };
+        let chars = token.split('');
+        return { token, type, chars };
     });
     
-    // Step 3: Further break down each token into individual characters
-    let granularTokens = classifiedTokens.map(entry => {
-        let chars = entry.token.split('');
-        return { ...entry, chars };
-    });
-    
-    return granularTokens;
+    return classifiedTokens;
 }

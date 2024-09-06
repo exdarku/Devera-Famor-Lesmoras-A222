@@ -75,36 +75,20 @@ function classifyToken(token) {
 
 // Function to tokenize the input
 function tokenize(input) {
-    // Step 1: Split the input into sentences using regex
-    let sentenceRegex = /[^.!?]+[.!?]+/g;
-    let sentences = input.match(sentenceRegex) || [];
-
-    let tokens = [];
-
-    // Step 2: Tokenize each sentence
-    sentences.forEach(sentence => {
-        let words = sentence.trim().split(/\s+/);
-        words.forEach(word => {
-            tokens.push({
-                token: word,
-                type: classifyToken(word)
-            });
-        });
-        // Add the sentence-ending punctuation as a separate token
-        let punctuation = sentence.match(/[.!?]$/);
-        if (punctuation) {
-            tokens.push({
-                token: punctuation[0],
-                type: 'Punctuation'
-            });
-        }
+    // Step 1: Split the input string by the delimiter '<'
+    let tokens = input.split('<');
+    
+    // Step 2: Classify each token and store it in an array
+    let classifiedTokens = tokens.map(token => {
+        let type = classifyToken(token);
+        return { token, type };
     });
-
+    
     // Step 3: Further break down each token into individual characters
-    let granularTokens = tokens.map(entry => {
+    let granularTokens = classifiedTokens.map(entry => {
         let chars = entry.token.split('');
         return { ...entry, chars };
     });
-
+    
     return granularTokens;
 }

@@ -5,10 +5,6 @@ Developed by:
 - Laurence Lesmoras
 - Laurence Kharl Devera
 - Joshua Famor
-<<<<<<< HEAD
-=======
-
->>>>>>> 8cb135bfa6d53eb70fe9de2431053dfae664bd22
 */
 let currentMessage = "";
 

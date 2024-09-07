@@ -15,8 +15,8 @@ document.getElementById("submit").onclick = function() {
     let tokens = tokenize(text);
     displayResults(tokens);
 }
-
-function displayResults(tokens) {
+// This is for the displays result
+function displayResults(tokens) { 
     let wordCount = 0, sentenceCount = 0, symbolCount = 0;
     let resultText = "";
     
@@ -54,9 +54,9 @@ function adjustHeight(textarea) {
     textarea.style.height = "auto"; 
     textarea.style.height = (textarea.scrollHeight) + "px"; 
 }
-
+// This function is to classify the token and tokenize the input 
 function classifyToken(token) {
-    if (/^[a-zA-Z]+$/.test(token)) {
+    if (/^[a-zA-Z]+$/.test(token)) { // These below are the category of the tokens
         return 'Word';
     } else if (/^\d+$/.test(token)) {
         return 'Number';
@@ -70,15 +70,29 @@ function classifyToken(token) {
         return 'Unknown';
     }
 }
-
 function tokenize(input) {
-    let tokens = input.match(/(\w+|[.,!?;:]+|[^a-zA-Z0-9.,!?;:\s]+)/g) || [];
+    // First split by the '<' symbol
+    let segments = input.split('<');
+
+    let tokens = [];
+    segments.forEach(segment => {
+        // Further tokenize each segment
+        let segmentTokens = segment.match(/(\w+|[.,!?;:]+|[^a-zA-Z0-9.,!?;:\s]+)/g) || [];
+        segmentTokens.forEach(token => tokens.push(token));
+        
+        // Re add the < as a token if it was present in the input
+        tokens.push('<');
+    });
     
+    // Remove the last '<' added because it would be extra from the loop
+    tokens.pop();
+
+    // Classify tokens
     let classifiedTokens = tokens.map(token => {
         let type = classifyToken(token);
         let chars = token.split('');
         return { token, type, chars };
     });
-    
+
     return classifiedTokens;
 }

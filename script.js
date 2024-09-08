@@ -109,12 +109,8 @@ function classifyToken(token) {
     }
 }
 function tokenize(input) {
-    /* 
-    Accepts words, numbers (Decimal and float), panctuations.
-    Match any sequence of characters that are not letters, digits, common punctuation.
-    Delimiter : '<'.
-    */
-    let tokens = input.match(/(\w+|[\s]+|[.,!?;:@#$%^&*]+|[^a-zA-Z0-9.,!?;:<]+)/g) || [];
+    // Delimiter : '<'
+    let tokens = input.match(/([+-]?\d*\.\d+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]<>@#$%^&*]+|\s+|\r?\n|\r)/g) || [];
     let classifiedTokens;
 
     if (tokens.length > 0){

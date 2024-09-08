@@ -17,8 +17,6 @@ textarea.oninput = function() {
 // When the "Tokenize my text, please uwu!" button is clicked, this will be executed.
 document.getElementById("submit").onclick = function() {
     let text = document.getElementById("userInput").value;
-    document.getElementById("totalCharacters").innerHTML = text.length; // should not include the delimeter (<)
-    
     let tokens = tokenize(text);
     displayResults(tokens);
 }
@@ -26,9 +24,9 @@ document.getElementById("submit").onclick = function() {
 
 
 function displayResults(tokens) {
-    let wordCount = 0, sentenceCount = 0, symbolCount = 0, spaceCount = 0, numbersCount = 0, alphanumbericCount = 0, phase2Result = "";
+    let charactersCount = 0, wordCount = 0, sentenceCount = 0, symbolCount = 0, spaceCount = 0, numbersCount = 0, alphanumbericCount = 0, endOfLineCount = 0, phase2Result = "";
     let resultText = "Phase 1 Output:\n";
-    
+
     tokens.forEach(tokenObj => {
         resultText += `Token: "${tokenObj.token}" - Type: ${tokenObj.type}\n`;
  
@@ -54,8 +52,15 @@ function displayResults(tokens) {
             case 'Alphanumeric':
                 alphanumbericCount++;
                 break;
+            case 'End of line':
+                endOfLineCount++;
+                break;
             default:
                 break;
+        }
+
+        for (let i = 0; i < tokenObj.token.length; i++) {
+            charactersCount++;
         }
 
         // Only characters that has 2 or more characters will be breakdown in phase 2
@@ -69,12 +74,14 @@ function displayResults(tokens) {
     resultText += phase2Result;
 
     document.getElementById("resultTextbox").value = resultText;
+    document.getElementById("totalCharacters").innerText = charactersCount;
     document.getElementById("totalWords").innerText = wordCount;
     document.getElementById("totalAlphanumberic").innerText = alphanumbericCount;
     document.getElementById("totalNumbers").innerText = numbersCount;
     document.getElementById("totalSpace").innerText = spaceCount;
     document.getElementById("totalSentences").innerText = sentenceCount;
     document.getElementById("totalSymbols").innerText = symbolCount;
+    document.getElementById("totalEndOfLine").innerText = endOfLineCount;
 
     adjustHeight(document.getElementById("resultTextbox"));
 }
@@ -89,7 +96,7 @@ function classifyToken(token) {
         return 'Letter';
     } else if (/^[a-zA-Z]+$/.test(token)) {
         return 'Word';
-    } else if (/^\d+$/.test(token)) {
+    } else if (/^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$/.test(token)) {
         return 'Number';
     } else if (/^[a-zA-Z0-9]+$/.test(token)) {
         return 'Alphanumeric';
@@ -107,12 +114,8 @@ function classifyToken(token) {
 }
 
 function tokenize(input) {
-    /* 
-    Accepts words, numbers (Decimal and float), panctuations.
-    Match any sequence of characters that are not letters, digits, common punctuation.
-    Delimiter : '<'.
-    */
-    let tokens = input.match(/(\w+|[\s]+|[.,!?;:@#$%^&*]+|[^a-zA-Z0-9.,!?;:<]+)/g) || [];
+    // Delimiter : '<'
+    let tokens = input.match(/([+-]?\d*\.\d+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]<>@#$%^&*]+|\s+|\r?\n|\r)/g) || [];
     let classifiedTokens;
 
     if (tokens.length > 0){
@@ -121,6 +124,8 @@ function tokenize(input) {
             let chars = token.split('');
             return { token, type, chars };
         });
+    } else {
+        document.getElementById("resultTextbox").value = "No results";
     }
     
     return classifiedTokens;

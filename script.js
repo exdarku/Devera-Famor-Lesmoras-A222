@@ -124,6 +124,6 @@ function tokenize(input) {
             return { token, type, chars };
         });
     }
-    
+        
     return classifiedTokens;
 }

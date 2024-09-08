@@ -31,6 +31,8 @@ The program features a web-based interface where users can input text for analys
 ### Credits
 This project was created by Laurence Lesmoras, Laurence Kharl Devera, and Joshua Famor as part of a programming language course. It serves as an educational tool for understanding basic text processing and tokenization techniques.
 
+- https://www.datacamp.com/cheat-sheet/regular-expresso
+
 ---
 
 Feel free to explore and modify the project as needed. Enjoy experimenting with text analysis!

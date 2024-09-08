@@ -117,8 +117,8 @@ function tokenize(input) {
     // Delimiter : '<'
     let tokens = input.match(/([+-]?\d*\.\d+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]<>@#$%^&*]+|\s+|\r?\n|\r)/g) || [];
     let classifiedTokens;
-
-    if (tokens.length > 0){
+    
+    if (tokens.length > 0) {
         classifiedTokens = tokens.map(token => {
             let type = classifyToken(token);
             let chars = token.split('');
@@ -126,6 +126,7 @@ function tokenize(input) {
         });
     } else {
         document.getElementById("resultTextbox").value = "No results";
+        adjustHeight(document.getElementById("resultTextbox"));
     }
     
     return classifiedTokens;

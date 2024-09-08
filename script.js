@@ -106,7 +106,7 @@ function classifyToken(token) {
         return 'End of line';
     } else if (/\s+/.test(token)) {
         return 'Space';
-    } else if (/^[^a-zA-Z0-9.,!?;:]+$/.test(token)) {
+    } else if (/^[.,!?;:(){}[\]>@#$%^&*]+$/.test(token)) {
         return 'Special Character';
     } else {
         return 'Unknown';
@@ -114,8 +114,8 @@ function classifyToken(token) {
 }
 
 function tokenize(input) {
-    // Delimiter : '<'
-    let tokens = input.match(/([^<]|([+-]?\d*\.(\d)?)+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]>@#$%^&*]+|\r?\n|\r)/g) || [];
+    // Delimiter : '<' 
+    let tokens = input.match(/(([+-]?\d*\.(\d+)?)+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]>@#$%^&*]|\r?\n|\r|[^<])/g) || [];
     let classifiedTokens;
 
     if (tokens.length > 0){

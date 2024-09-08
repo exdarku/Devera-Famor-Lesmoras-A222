@@ -115,7 +115,7 @@ function classifyToken(token) {
 
 function tokenize(input) {
     // Delimiter : '<'
-    let tokens = input.match(/([+-]?\d*\.\d+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]<>@#$%^&*]+|\s+|\r?\n|\r)/g) || [];
+    let tokens = input.match(/([^<]|([+-]?\d*\.(\d)?)+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]>@#$%^&*]+|\r?\n|\r)/g) || [];
     let classifiedTokens;
 
     if (tokens.length > 0){

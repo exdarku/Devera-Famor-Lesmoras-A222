@@ -24,7 +24,7 @@ document.getElementById("submit").onclick = function() {
 }
 
 function displayResults(tokens) {
-    let wordCount = 0, sentenceCount = 0, symbolCount = 0;
+    let wordCount = 0, sentenceCount = 0, symbolCount = 0, spaceCount = 0, numbersCount = 0, alphanumbericCount = 0, phase2Result = "";
     let resultText = "Phase 1 Output:\n";
     
     tokens.forEach(tokenObj => {
@@ -43,21 +43,34 @@ function displayResults(tokens) {
             case 'Special Character':
                 symbolCount++;
                 break;
+            case 'Number':
+                numbersCount++;
+                break;
+            case 'Space':
+                spaceCount++;
+                break;
+            case 'Alphanumeric':
+                alphanumbericCount++;
+                break;
             default:
                 break;
         }
-    });
-    resultText += "\n======================================\n\nPhase 2 Output (Granular Breakdown):\n";
-    tokens.forEach(tokenObj => {
+
         // Only characters that has 2 or more characters will be breakdown in phase 2
         if(tokenObj.chars.length > 1){
             const formattedChars = tokenObj.chars.map(char => `'${char}'`).join(', ');
-            resultText += `Token: "${tokenObj.token}" -> ${formattedChars}\n`;
+            phase2Result += `Token: "${tokenObj.token}" -> ${formattedChars}\n`;
         };
+
     });
+    resultText += "\n======================================\n\nPhase 2 Output (Granular Breakdown):\n";
+    resultText += phase2Result;
 
     document.getElementById("resultTextbox").value = resultText;
     document.getElementById("totalWords").innerText = wordCount;
+    document.getElementById("totalAlphanumberic").innerText = alphanumbericCount;
+    document.getElementById("totalNumbers").innerText = numbersCount;
+    document.getElementById("totalSpace").innerText = spaceCount;
     document.getElementById("totalSentences").innerText = sentenceCount;
     document.getElementById("totalSymbols").innerText = symbolCount;
 
@@ -70,7 +83,7 @@ function adjustHeight(textarea) {
 }
 // This function is to classify the token and tokenize the input 
 function classifyToken(token) {
-    if (/^[a-zA-Z]+$/.test(token)) { // These below are the category of the tokens
+    if (/^[a-zA-Z]+$/.test(token)) {
         return 'Word';
     } else if (/^\d+$/.test(token)) {
         return 'Number';
@@ -78,24 +91,29 @@ function classifyToken(token) {
         return 'Alphanumeric';
     } else if (/^[.,!?;:]+$/.test(token)) {
         return 'Punctuation';
-    } else if(/^\r?\n|\r$/.test(token)) {
+    } else if(/(\s*)(\r?\n|\r)/.test(token)) {
         return 'End of line';
-    } else if (/\s/.test(token)) {
+    } else if (/\s+/.test(token)) {
         return 'Space';
     } else if (/^[^a-zA-Z0-9.,!?;:]+$/.test(token)) {
         return 'Special Character';
-    }  else {
+    } else {
         return 'Unknown';
     }
 }
 function tokenize(input) {
-    let tokens = input.match(/(\w+|[.,!?;:]+|[^a-zA-Z0-9.,!?;:\s]+)/g) || [];
-    
+    /* 
+    Accepts words, numbers (Decimal and float), panctuations.
+    Match any sequence of characters that are not letters, digits, common punctuation.
+    Delimiter : '<'.
+    */
+    let tokens = input.match(/(\w+|[.,!?;:]+|[^a-zA-Z0-9.,!?;:<]+)/g) || [];
+
     let classifiedTokens = tokens.map(token => {
         let type = classifyToken(token);
         let chars = token.split('');
         return { token, type, chars };
     });
-
+    
     return classifiedTokens;
 }

@@ -21,8 +21,6 @@ document.getElementById("submit").onclick = function() {
     displayResults(tokens);
 }
 
-
-
 function displayResults(tokens) {
     let charactersCount = 0, wordCount = 0, sentenceCount = 0, symbolCount = 0, spaceCount = 0, numbersCount = 0, alphanumbericCount = 0, endOfLineCount = 0, phase2Result = "";
     let resultText = "Phase 1 Output:\n";
@@ -90,11 +88,9 @@ function adjustHeight(textarea) {
     textarea.style.height = "auto"; 
     textarea.style.height = (textarea.scrollHeight) + "px"; 
 }
-
+// This function is to classify the token and tokenize the input 
 function classifyToken(token) {
-    if(/^[a-zA-Z]{1}$/.test(token)){
-        return 'Letter';
-    } else if (/^[a-zA-Z]+$/.test(token)) {
+    if (/^[a-zA-Z]+$/.test(token)) {
         return 'Word';
     } else if (/^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$/.test(token)) {
         return 'Number';
@@ -112,7 +108,6 @@ function classifyToken(token) {
         return 'Unknown';
     }
 }
-
 function tokenize(input) {
     // Delimiter : '<'
     let tokens = input.match(/([+-]?\d*\.\d+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]<>@#$%^&*]+|\s+|\r?\n|\r)/g) || [];
@@ -128,6 +123,6 @@ function tokenize(input) {
         document.getElementById("resultTextbox").value = "No results";
         adjustHeight(document.getElementById("resultTextbox"));
     }
-    
+        
     return classifiedTokens;
 }

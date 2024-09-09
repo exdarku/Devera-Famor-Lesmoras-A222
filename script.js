@@ -27,7 +27,6 @@ document.getElementById("submit").onclick = function() {
 function displayResults(tokens) {
     let charactersCount = 0, wordCount = 0, sentenceCount = 0, symbolCount = 0, spaceCount = 0, numbersCount = 0, alphanumbericCount = 0, endOfLineCount = 0, phase2Result = "";
     let resultText = "Phase 1 Output:\n";
-    let isDisplayed = false;
 
     tokens.forEach(tokenObj => {
         resultText += `Token: "${tokenObj.token}" - Type: ${tokenObj.type}\n`;

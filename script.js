@@ -6,6 +6,7 @@ Developed by:
 - Laurence Kharl Devera
 - Joshua Famor
 */
+let result;
 
 // A function for a responsive textarea when typing multiple lines.
 var textarea = document.getElementById("userInput");
@@ -26,6 +27,7 @@ document.getElementById("submit").onclick = function() {
 function displayResults(tokens) {
     let charactersCount = 0, wordCount = 0, sentenceCount = 0, symbolCount = 0, spaceCount = 0, numbersCount = 0, alphanumbericCount = 0, endOfLineCount = 0, phase2Result = "";
     let resultText = "Phase 1 Output:\n";
+    let isDisplayed = false;
 
     tokens.forEach(tokenObj => {
         resultText += `Token: "${tokenObj.token}" - Type: ${tokenObj.type}\n`;
@@ -63,15 +65,21 @@ function displayResults(tokens) {
             charactersCount++;
         }
 
-        // Only characters that has 2 or more characters will be breakdown in phase 2
-        if(tokenObj.chars.length > 1){
-            const formattedChars = tokenObj.chars.map(char => `'${char}'`).join(', ');
-            phase2Result += `Token: "${tokenObj.token}" -> ${formattedChars}\n`;
-        };
+        // tokenObj.splittedToken.forEach(token => {
+        //     let chars = token.split('');
+        //     console.log(token)
+        //     // Only characters that has 2 or more characters will be breakdown in phase 2
+        //     if(chars.length > 1) {
+        //         const formattedChars = chars.map(char => `'${char}'`).join(', ');
+        //         // console.log(formattedChars);
+        //         phase2Result += `Token: "${token}" -> ${formattedChars}\n`;
+        //         isDisplayed = true;
+        //     };
+        // });
 
     });
     resultText += "\n======================================\n\nPhase 2 Output (Granular Breakdown):\n";
-    resultText += phase2Result;
+    resultText += result;
 
     document.getElementById("resultTextbox").value = resultText;
     document.getElementById("totalCharacters").innerText = charactersCount;
@@ -86,6 +94,7 @@ function displayResults(tokens) {
     adjustHeight(document.getElementById("resultTextbox"));
 }
 
+
 function adjustHeight(textarea) {
     textarea.style.height = "auto"; 
     textarea.style.height = (textarea.scrollHeight) + "px"; 
@@ -94,9 +103,9 @@ function adjustHeight(textarea) {
 function classifyToken(token) {
     if(/^[a-zA-Z]{1}$/.test(token)){
         return 'Letter';
-    } else if (/^[a-zA-Z]+$/.test(token)) {
+    } else if (/^[a-zA-Z]+(\'\w+)?$/.test(token)) {
         return 'Word';
-    } else if (/^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$/.test(token)) {
+    } else if (/^[+-]?(\d+(\.\d+)?)([eE][+-]?\d+)?$/.test(token)) {
         return 'Number';
     } else if (/^[a-zA-Z0-9]+$/.test(token)) {
         return 'Alphanumeric';
@@ -106,23 +115,36 @@ function classifyToken(token) {
         return 'End of line';
     } else if (/\s+/.test(token)) {
         return 'Space';
-    } else if (/^[.,!?;:(){}[\]>@#$%^&*]+$/.test(token)) {
+    } else if (/^[.,!?;:(){}[\]>@#$%^&*+="']+$/.test(token)) {
         return 'Special Character';
     } else {
         return 'Unknown';
     }
 }
 
+function displayPhase2(tokens){
+    let formattedChars;
+    result = "";
+    tokens.forEach(token =>{
+        let chars = token.split('');
+        formattedChars = chars.map(char => `'${char}'`).join(', ');
+        console.log(formattedChars)
+        result += `Token: "${token}" -> ${formattedChars}\n`
+    });
+}
+
 function tokenize(input) {
     // Delimiter : '<' 
-    let tokens = input.match(/(([+-]?\d*\.(\d+)?)+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]>@#$%^&*]|\r?\n|\r|[^<])/g) || [];
+    let splittedToken = input.split('<');
+
+    let tokens = input.match(/(([+-]?\d+\.\d+)+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+(\'\w+)?|[\s]|[.,!?;:(){}[\]>@#$%^&*+="']|\r?\n|\r|[^<])/g) || [];
     let classifiedTokens;
 
     if (tokens.length > 0){
+        displayPhase2(splittedToken);
         classifiedTokens = tokens.map(token => {
             let type = classifyToken(token);
-            let chars = token.split('');
-            return { token, type, chars };
+            return { token, type };
         });
     } else {
         document.getElementById("resultTextbox").value = "No results";

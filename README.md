@@ -1,10 +1,5 @@
 # PL-Tokenizer
 
-## Author
-- Laurence Lesmoras
-- Laurence Kharl Devera
-- Joshua Famor
-
 ## Purpose
 The PL-Tokenizer is a summative assessment project for a programming language course. This project demonstrates the implementation of a basic tokenizer that processes and analyzes strings of text. It is designed to categorize and count different types of tokens in the input text, including characters, words, sentences, and special symbols.
 
@@ -29,7 +24,9 @@ The program features a web-based interface where users can input text for analys
 4. View the summarized and detailed results displayed on the interface.
 
 ### Credits
-This project was created by Laurence Lesmoras, Laurence Kharl Devera, and Joshua Famor as part of a programming language course. It serves as an educational tool for understanding basic text processing and tokenization techniques.
+This project was created by **Laurence Lesmoras, Laurence Kharl Devera, and Joshua Famor** as part of a programming language course. It serves as an educational tool for understanding basic text processing and tokenization techniques.
+
+- https://www.datacamp.com/cheat-sheet/regular-expresso
 
 ---
 

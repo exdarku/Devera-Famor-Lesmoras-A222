@@ -27,6 +27,7 @@ document.getElementById("submit").onclick = function() {
 function displayResults(tokens) {
     let charactersCount = 0, wordCount = 0, sentenceCount = 0, symbolCount = 0, spaceCount = 0, numbersCount = 0, alphanumbericCount = 0, endOfLineCount = 0, phase2Result = "";
     let resultText = "Phase 1 Output:\n";
+    let isDisplayed = false;
 
     tokens.forEach(tokenObj => {
         resultText += `Token: "${tokenObj.token}" - Type: ${tokenObj.type}\n`;
@@ -64,6 +65,12 @@ function displayResults(tokens) {
             charactersCount++;
         }
 
+        // Only characters that has 2 or more characters will be breakdown in phase 2
+        if(tokenObj.chars.length > 1){
+            const formattedChars = tokenObj.chars.map(char => `'${char}'`).join(', ');
+            phase2Result += `Token: "${tokenObj.token}" -> ${formattedChars}\n`;
+        };
+
     });
     resultText += "\n======================================\n\nPhase 2 Output (Granular Breakdown):\n";
     resultText += result;
@@ -90,7 +97,7 @@ function adjustHeight(textarea) {
 function classifyToken(token) {
     if(/^[a-zA-Z]{1}$/.test(token)){
         return 'Letter';
-    } else if (/^[a-zA-Z]+([@]\w+)?(\'\w+)?$/.test(token)) {
+    } else if (/^[a-zA-Z]+$/.test(token)) {
         return 'Word';
     } else if (/^[+-]?(\d+(\.\d+)?)([eE][+-]?\d+)?$/.test(token)) {
         return 'Number';
@@ -102,31 +109,16 @@ function classifyToken(token) {
         return 'End of line';
     } else if (/\s+/.test(token)) {
         return 'Space';
-    } else if (/^[.,!?;:(){}[\]>@#$%^&*+="'/\\|~`]+$/.test(token)) {
+    } else if (/^[.,!?;:(){}[\]>@#$%^&*]+$/.test(token)) {
         return 'Special Character';
     } else {
         return 'Unknown';
     }
 }
 
-function displayPhase2(tokens){
-    let formattedChars;
-    result = "";
-    tokens.forEach(token =>{
-        if(token != ""){
-            let chars = token.split('');
-            formattedChars = chars.map(char => `'${char}'`).join(', ');
-            console.log(formattedChars)
-            result += `Token: "${token}" -> ${formattedChars}\n`
-        }
-    });
-}
-
 function tokenize(input) {
     // Delimiter : '<' 
-    let splittedToken = input.split('<');
-
-    let tokens = input.match(/(([+-]?\d+\.\d+)+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+([@]\w+)?(\'\w+)?|[\s]|[.,!?;:(){}[\]>@#$%^&*+="'/\\|~`]+|\r?\n|\r|[^<])/g) || [];
+    let tokens = input.match(/(([+-]?\d*\.(\d+)?)+([eE][+-]?\d+)?|[+-]?\d+([eE][+-]?\d+)?|\w+|[\s]|[.,!?;:(){}[\]>@#$%^&*]|\r?\n|\r|[^<])/g) || [];
     let classifiedTokens;
 
     if (tokens.length > 0){
